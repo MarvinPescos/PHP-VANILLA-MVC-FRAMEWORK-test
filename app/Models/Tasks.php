@@ -6,7 +6,7 @@ use App\Core\Model;
 
 class Tasks Extends Model {
 
-    protected $table = 'tasks';
+    protected static $table = 'tasks';
 
 }
 

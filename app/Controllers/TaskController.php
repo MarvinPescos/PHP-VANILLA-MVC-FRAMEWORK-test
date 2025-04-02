@@ -10,6 +10,8 @@ use App\Models\Tasks;
 use App\Models\UserStats;
 use App\Models\Activities;
 
+use function PHPUnit\Framework\isEmpty;
+
 class TaskController extends Controller 
 {
 
@@ -19,18 +21,20 @@ protected $UserStatsM;
 public function  __construct()
 {
 $this->TaskM = new Tasks();
-// $this->UserStatsM = new UserStats();
+$this->UserStatsM = new UserStats();
 }
 
 public function index()
 {
  $tasks =$this->TaskM->all();
+ $userStats = $this->UserStatsM->all();
 
  return $this->view('task/index', [
     'title' => 'tasks',
     'tasks' => $tasks,
-
+    'userStats' => $userStats
  ]);
+
  }
 
  public function create(){
@@ -99,25 +103,27 @@ public function toggle ($id){
 
     if($updated){
         $_SESSION['success'] = 'Task status updated!';
-
         if($newStatus === 'completed')
         {
-
             $xpRewards = [
                 'easy' => 10,
                 'medium' => 20,
                 'hard' => 30,
             ];
-
             $xpReward = $xpRewards[$task['difficulty']];
-        }
+            $user_id = $_SESSION['user_id'];
 
+            $this->UserStatsM->addXp($user_id, $xpReward);
+        }
     } else {
         $_SESSION['error'] = 'Failed to update task!';
     }
-}
+
+    $this->redirect('/task/index');
 
 }
 
+}
 
 
+?>

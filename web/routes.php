@@ -4,6 +4,8 @@ use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use App\Controllers\AuthController;
 use App\Middleware\AuthMiddleware;
+use App\Controllers\TaskController;
+
 
   // Define routes
   $router->get('/', [HomeController::class, 'index']);
@@ -29,4 +31,10 @@ use App\Middleware\AuthMiddleware;
 
 
   //Add task routes
+  $router->get('/task/index',[TaskController::class, 'index']);
+  $router->get('/task/create', [TaskController::class, 'create']);
+  $router->post('/tasks', [TaskController::class, 'store']);
+  $router->get('/task/{id}/edit', [TaskController::class, 'edit']);
+  $router->put('/task/{id}', [TaskController::class, 'update']);
+  $router->post('/task/{id}/toggle', [TaskController::class, 'toggle']);
 

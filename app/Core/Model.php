@@ -27,6 +27,14 @@ abstract class Model
       ->fetch();
   }
 
+  public function where($column, $value)
+{
+    return self::$db->query("SELECT * FROM tasks WHERE {$column} = :value")
+        ->bind(['value' => $value])
+        ->fetchAll();
+}
+
+
   /**
    * Get all records
    */
