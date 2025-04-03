@@ -18,11 +18,13 @@ class TaskController extends Controller
 
 protected $TaskM;
 protected $UserStatsM;
+protected $ActivitiesM;
 
 public function  __construct()
 {
 $this->TaskM = new Tasks();
 $this->UserStatsM = new UserStats();
+$this->ActivitiesM = new Activities();
 }
 
 public function index()
@@ -31,11 +33,15 @@ public function index()
     $tasks = $this->TaskM->getTasksByUserId($currentUser['id']); // Get only current user's tasks
     $userStats = $this->UserStatsM->getByUserId($currentUser['id']);
 
+    // Fetch recent activities
+    $activities = $this->ActivitiesM->getRecentActivities($currentUser['id'], 10);
+
  return $this->view('task/index', [
     'title' => 'tasks',
     'tasks' => $tasks,
     'userStats' => $userStats,
-    'currentUser' => $currentUser
+    'currentUser' => $currentUser,
+    'activities' => $activities
  ]);
 
  }
