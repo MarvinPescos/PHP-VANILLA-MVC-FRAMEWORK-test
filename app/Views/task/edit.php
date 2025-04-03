@@ -15,9 +15,13 @@
     <option value="pending">Pending</option>
     <option value="completed">Completed</option>
 </select>
+<select name="difficulty">
+    <option value="easy">easy</option>
+    <option value="medium">medium</option>
+    <option value="hard">hard</option>
+</select>
       </div>
-      <button type="submit" class="btn btn-primary">Create Task</button>
-      <a href="/index/task" class="btn btn-secondary">Cancel</a>
+      <button type="submit" class="btn btn-primary">update Task</button>
     </form>
   </div>
 </div>

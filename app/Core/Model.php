@@ -15,6 +15,7 @@ abstract class Model
   {
     self::$db = $database;
   }
+  
 
   /**
    * Find a record by ID

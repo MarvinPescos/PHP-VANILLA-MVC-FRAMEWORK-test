@@ -20,7 +20,7 @@ class UserStats Extends Model {
         SELECT  userstats.id, userstats.xp, userstats.level, userstats.hearts
         FROM userstats
         INNER JOIN users ON users.id = userstats.user_id
-        WHERE usertats.user_id = ? ")
+        WHERE userstats.user_id = ? ")
         ->bind([1=>$user_id])
         ->execute()
         ->fetch();

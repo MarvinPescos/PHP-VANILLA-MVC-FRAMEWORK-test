@@ -31,10 +31,13 @@ use App\Controllers\TaskController;
 
 
   //Add task routes
-  $router->get('/task/index',[TaskController::class, 'index']);
-  $router->get('/task/create', [TaskController::class, 'create']);
-  $router->post('/tasks', [TaskController::class, 'store']);
-  $router->get('/task/{id}/edit', [TaskController::class, 'edit']);
-  $router->put('/task/{id}', [TaskController::class, 'update']);
-  $router->post('/task/{id}/toggle', [TaskController::class, 'toggle']);
+  $router->get('/task/index',[TaskController::class, 'index'], [AuthMiddleware::class]);
+  $router->get('/task/create', [TaskController::class, 'create'], [AuthMiddleware::class]);
+  $router->post('/tasks', [TaskController::class, 'store'], [AuthMiddleware::class]);
+  $router->get('/task/{id}/edit', [TaskController::class, 'edit'], [AuthMiddleware::class]);
+  $router->put('/task/{id}', [TaskController::class, 'update'], [AuthMiddleware::class]);
+  $router->delete('/task/{id}/delete', [TaskController::class, 'destroy'], [AuthMiddleware::class]);
+  $router->post('/task/{id}/toggle', [TaskController::class, 'toggle'], [AuthMiddleware::class]);
+
+
 

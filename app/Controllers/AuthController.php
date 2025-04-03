@@ -44,7 +44,6 @@ class AuthController extends Controller
   public function login()
   {
 
-    
     // Validate the form
     $data = Input::sanitize([
       'email' => Input::post('email'),

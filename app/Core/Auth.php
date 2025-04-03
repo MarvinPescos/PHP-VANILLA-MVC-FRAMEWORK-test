@@ -33,17 +33,33 @@ abstract class Auth
     return self::$user;
   }
 
+// public static function getByUserId($user = null)
+//   {
+//     $user = $user ?? static::user();
+//     if (!$user)
+//       return null;
+
+//     return is_array($user)
+//       ? ($user['id'] ?? null)
+//       : ($user->id ?? null);
+//   }
+
   public static function login($user)
   {
     if (!$user) {
       throw new \Exception('User not found or invalid');
-    }
+  }
 
-    // Store the entire user array or object in the session
-    $_SESSION['user'] = $user;
+  // Clear the old session to prevent user data mix-up
+  session_unset();  // Remove all session variables
+  session_destroy(); // Destroy the old session
+  session_start();  // Start a new session
 
-    // Regenerate session ID to prevent session fixation attacks
-    session_regenerate_id(true);
+  // Store the new logged-in user
+  $_SESSION['user'] = $user;
+
+  // Regenerate session ID to prevent session fixation attacks
+  session_regenerate_id(true);
   }
 
   public static function logout()
