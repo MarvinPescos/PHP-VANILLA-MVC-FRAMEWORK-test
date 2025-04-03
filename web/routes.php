@@ -5,6 +5,8 @@ use App\Controllers\UserController;
 use App\Controllers\AuthController;
 use App\Middleware\AuthMiddleware;
 use App\Controllers\TaskController;
+use App\Controllers\DailyTaskController;
+
 
 
   // Define routes
@@ -30,7 +32,7 @@ use App\Controllers\TaskController;
   $router->delete('/users/{id}', [UserController::class, 'destroy'], [AuthMiddleware::class]);
 
 
-  //Add task routes
+  //task routes
   $router->get('/task/index',[TaskController::class, 'index'], [AuthMiddleware::class]);
   $router->get('/task/create', [TaskController::class, 'create'], [AuthMiddleware::class]);
   $router->post('/tasks', [TaskController::class, 'store'], [AuthMiddleware::class]);
@@ -39,5 +41,12 @@ use App\Controllers\TaskController;
   $router->delete('/task/{id}/delete', [TaskController::class, 'destroy'], [AuthMiddleware::class]);
   $router->post('/task/{id}/toggle', [TaskController::class, 'toggle'], [AuthMiddleware::class]);
 
-
+   //Daily task routes
+   $router->get('/dailyTask/index',[DailyTaskController::class, 'index'], [AuthMiddleware::class]);
+   $router->get('/dailyTask/create', [DailyTaskController::class, 'create'], [AuthMiddleware::class]);
+   $router->post('/dailyTask', [DailyTaskController::class, 'store'], [AuthMiddleware::class]);
+   $router->get('/dailyTask/{id}/edit', [DailyTaskController::class, 'edit'], [AuthMiddleware::class]);
+   $router->put('/dailyTask/{id}', [DailyTaskController::class, 'update'], [AuthMiddleware::class]);
+   $router->delete('/dailyTask/{id}/delete', [DailyTaskController::class, 'destroy'], [AuthMiddleware::class]);
+   $router->post('/dailyTask/{id}/toggle', [DailyTaskController::class, 'toggle'], [AuthMiddleware::class]);
 

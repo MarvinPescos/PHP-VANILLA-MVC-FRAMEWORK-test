@@ -88,7 +88,7 @@ public function index()
     $updated = $this->TaskM->update($id, $data);
     
     if($updated){
-        $_SESSION['success'] = 'Task updated successfully!';
+        $_SESSION['success'] = 'Task updated successfully!';    
         $this->redirect('/task/index');
     } else{
         $_SESSION['error'] = 'Failed to update task!';
