@@ -14,9 +14,13 @@ class DailyTaskController extends Controller
 {
 
     protected $DailyTaskM;
+    protected $UserStatsM;
+
 
     public function __construct(){
         $this->DailyTaskM = new DailyTasks();
+        $this->UserStatsM = new UserStats();
+
     }
 
     public function index (){
@@ -50,9 +54,12 @@ class DailyTaskController extends Controller
             $this->redirect('/dailyTask/index');
     }
 
-    public function edit (){
+    public function edit ($id){
+        $dailyTasks = $this->DailyTaskM->find($id);
+
         return $this->view('dailyTask/edit', [
-            'title' => 'Edit Daily Tasks'
+            'title' => 'Edit Daily Tasks',
+            'dailyTasks' => $dailyTasks
         ]);
     }
 
@@ -100,6 +107,36 @@ class DailyTaskController extends Controller
         $this->redirect('/dailyTask/index');
     }
 
+    public function toggle($id) {
+        $currentUser = Auth::user();
+        $dailyTasks = $this->DailyTaskM->find($id);
 
-}
+        $newStatus = $dailyTasks['status'] === 'completed' ? 'pending' : 'completed';
+        
+        $updated = $this->DailyTaskM->update($id, [
+            "status" => $newStatus,
+            "user_id" => $currentUser['id']
+        ]);
+
+        if($updated){
+            $_SESSION['success'] = 'Daily task updated!';
+            if($newStatus === 'completed'){
+                $xpRewards = [
+                    'easy' => 10,
+                    'medium' => 20,
+                    'hard' => 30,
+                ];
+
+                $xpReward = $xpRewards[$dailyTasks['difficulty']] ;
+                $user_id = $currentUser['id'];
+
+                $this->UserStatsM->addXp($user_id, $xpReward);
+            }
+        }else{
+                $_SESSION['error'] = 'Daily task failed to update!';
+            }
+                $this->redirect('/dailyTask/index');
+        }
+    }
+
 ?>

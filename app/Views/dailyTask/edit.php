@@ -3,11 +3,11 @@
     <h1><?= $title ?></h1>
   </div>
   <div class="card-body">
-    <form method="post" action="/task/<?= $task['id']?>">
+    <form method="post" action="/dailyTask/<?= $dailyTasks['id']?>">
     <input type="hidden" name="_method" value="PUT">
       <div class="mb-3">
         <label for="name" class="form-label">Title</label>
-        <input type="text" class="form-control" id="title" name="title" value="<?= $task['title'] ?>"  required>
+        <input type="text" class="form-control" id="title" name="title" value="<?= $dailyTasks['title'] ?>"  required>
       </div>
       <div class="mb-3">
       <label for="name" class="form-label">status</label>
