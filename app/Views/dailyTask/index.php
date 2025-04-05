@@ -24,10 +24,16 @@
                                    onchange="this.form.submit()" 
                                    <?= $dailyTask['status'] === 'completed' ? 'checked' : '' ?>>
                         </form>
+                        
                         <div>
                             <span class="<?= $dailyTask['status'] === 'completed' ? 'text-decoration-line-through' : '' ?>">
                                 <?= htmlspecialchars($dailyTask['title']) ?>
                             </span>
+                            <!-- //category -->
+                            <span class=" badge bg-secondary ms-2">
+                                <?= ucfirst($dailyTask['category']) ?>
+                            </span>
+                            <!-- difficulty -->
                             <span class="badge bg-<?= getDifficultyBadgeColor($dailyTask['difficulty']) ?> ms-2">
                                 <?= ucfirst($dailyTask['difficulty']) ?>
                             </span>
@@ -48,30 +54,7 @@
     <?php endif; ?>
 </div>
 
-<div class="card mt-4">
-    <div class="card-header bg-primary text-white">
-        <h5 class="mb-0">Recent Activities</h5>
-    </div>
-    <div class="card-body">
-        <?php if (!empty($activities)): ?>
-            <div class="list-group">
-                <?php foreach ($activities as $activity): ?>
-                    <div class="list-group-item">
-                        <div class="d-flex w-100 justify-content-between">
-                            <h6 class="mb-1"><?= htmlspecialchars($activity['action']) ?></h6>
-                            <small class="text-muted">
-                                <?= date('M d, Y H:i', strtotime($activity['created_at'])) ?>
-                            </small>
-                        </div>
-                        <p class="mb-1"><?= htmlspecialchars($activity['description']) ?></p>
-                    </div>
-                <?php endforeach; ?>
-            </div>
-        <?php else: ?>
-            <p class="text-muted">No recent activities</p>
-        <?php endif; ?>
-    </div>
-</div>
+
 
 <?php
 // Helper function for difficulty badge colors

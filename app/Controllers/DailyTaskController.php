@@ -46,6 +46,7 @@ class DailyTaskController extends Controller
                 'title' => Input::post('title'),
                 'status' => Input::post('status'),
                 'difficulty' => Input::post('difficulty'),
+                'category' => Input::post('category'),
                 'user_id' => $currentUser['id']
 
             ]);

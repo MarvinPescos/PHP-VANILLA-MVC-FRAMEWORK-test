@@ -58,6 +58,7 @@ public function index()
         'title' => Input::post('title'),
         'status' => Input::post('status'),
         'difficulty' => Input::post('difficulty'),
+        'category' => Input::post('category'),
         'user_id' => $currentUser['id']
     
     ]);
@@ -142,6 +143,7 @@ public function toggle ($id){
             $user_id = $currentUser['id'];
 
             $this->UserStatsM->addXp($user_id, $xpReward);
+            $this->UserStatsM->addSp($currentUser['id'], $task['category'], $task['difficulty']);
         }
     } else {
         $_SESSION['error'] = 'Failed to update task!';

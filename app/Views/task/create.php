@@ -9,10 +9,17 @@
         <input type="text" class="form-control" id="title" name="title" required>
       </div>
       <div class="mb-3">
-      <label for="name" class="form-label">status</label>
-      <select name="status">
-    <option value="pending">Pending</option>
-    <option value="completed">Completed</option>
+      <label for="name" class="form-label">Category</label>
+      <input type="hidden" name="status" value="pending">
+      <select name="category">
+    <option value="Physical Health">Physical Health</option>
+    <option value="Mental Wellness">Mental Wellness</option>
+    <option value="Personal Growth">Personal Growth</option>
+    <option value="Career / Studies">Career / Studies</option>
+    <option value="Finance">Finance</option>
+    <option value="Home Environment">Home & Environment</option>
+    <option value="Relationships Social">Relationships & Social</option>
+    <option value="Passion Hobbies">Passion & Hobbies</option>
       </select>
       <select name = "difficulty">
         <option value="easy" selected >Easy</option>

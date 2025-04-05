@@ -1,23 +1,7 @@
 <div class="container py-4">
     <!-- User Welcome Card -->
-    <div class="card mb-4">
-        <div class="card-body">
-            <h2 class="card-title">Welcome, <?= htmlspecialchars($currentUser['name'] ?? 'User') ?></h2>
-            
-            <?php if ($userStats): ?>
-                <div class="progress mb-2" style="height: 20px;">
-                    <div class="progress-bar" role="progressbar" 
-                         style="width: <?= ($userStats['xp'] / ($userStats['level'] * 100)) * 100 ?>%">
-                        <?= $userStats['xp'] ?>/<?= $userStats['level'] * 100 ?> XP
-                    </div>
-                </div>
-                <p class="mb-0">Level: <?= $userStats['level'] ?></p>
-                <p class="mb-0">Hearts: <?= $userStats['hearts'] ?></p>
-            <?php else: ?>
-                <p class="text-muted mb-0">No stats available.</p>
-            <?php endif; ?>
-        </div>
-    </div>
+
+    <?php include __DIR__ . '/../UserStats/statsBar.php'; ?>
 
     <!-- Tasks Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -46,6 +30,9 @@
                             <span class="<?= $task['status'] === 'completed' ? 'text-decoration-line-through' : '' ?>">
                                 <?= htmlspecialchars($task['title']) ?>
                             </span>
+                            <span class=" badge bg-secondary ms-2">
+                                <?= ucfirst($task['category']) ?>
+                            </span>
                             <span class="badge bg-<?= getDifficultyBadgeColor($task['difficulty']) ?> ms-2">
                                 <?= ucfirst($task['difficulty']) ?>
                             </span>
@@ -66,6 +53,8 @@
     <?php endif; ?>
 </div>
 
+
+
 <div class="card mt-4">
     <div class="card-header bg-primary text-white">
         <h5 class="mb-0">Recent Activities</h5>
@@ -81,7 +70,10 @@
                                 <?= date('M d, Y H:i', strtotime($activity['created_at'])) ?>
                             </small>
                         </div>
-                        <p class="mb-1"><?= htmlspecialchars($activity['description']) ?></p>
+                        <p class="mb-1"> <?= htmlspecialchars($activity['description']) ?></p>
+                        <p class="mb-1"> <?= htmlspecialchars($activity['category']) ?></p>
+
+                  
                     </div>
                 <?php endforeach; ?>
             </div>
@@ -89,7 +81,7 @@
             <p class="text-muted">No recent activities</p>
         <?php endif; ?>
     </div>
-</div>3456
+</div>
 
 <?php
 // Helper function for difficulty badge colors

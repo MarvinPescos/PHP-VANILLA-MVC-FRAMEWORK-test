@@ -6,8 +6,7 @@ use App\Controllers\AuthController;
 use App\Middleware\AuthMiddleware;
 use App\Controllers\TaskController;
 use App\Controllers\DailyTaskController;
-
-
+use App\Controllers\StatsController;
 
   // Define routes
   $router->get('/', [HomeController::class, 'index']);
@@ -50,3 +49,4 @@ use App\Controllers\DailyTaskController;
    $router->delete('/dailyTask/{id}/delete', [DailyTaskController::class, 'destroy'], [AuthMiddleware::class]);
    $router->post('/dailyTask/{id}/toggle', [DailyTaskController::class, 'toggle'], [AuthMiddleware::class]);
 
+  
