@@ -39,6 +39,21 @@ class User extends Model
     return password_verify($password, $user['password']) ? $user : false;
   }
 
+  public function addCoin ($user_id, $coinRewards){
+    $user = $this->find($user_id); 
+
+    if(!$user){
+      return false;
+    }
+
+    $newCoins = $user['coins'] + $coinRewards;
+
+    return $this->update($user['id'],[
+      'coins' => $newCoins
+    ]);
+
+  }
+
   /**
    * Retrieve user email using inner join
    */

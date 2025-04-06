@@ -73,6 +73,14 @@
                         <p class="mb-1"> <?= htmlspecialchars($activity['description']) ?></p>
                         <p class="mb-1"> <?= htmlspecialchars($activity['category']) ?></p>
 
+                        <?php if (isset($activity['coins']) && $activity['coins'] > 0): ?>
+                        <div class="mt-1">
+                            <span class="badge bg-warning text-dark">
+                                <i class="fas fa-coins me-1"></i> Earned: <?= htmlspecialchars($activity['coins']) ?> coins
+                            </span>
+                        </div>
+                        <?php endif; ?>
+
                   
                     </div>
                 <?php endforeach; ?>

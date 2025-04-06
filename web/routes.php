@@ -3,10 +3,11 @@
 use App\Controllers\HomeController;
 use App\Controllers\UserController;
 use App\Controllers\AuthController;
+use App\Controllers\BadHabitsController;
 use App\Middleware\AuthMiddleware;
 use App\Controllers\TaskController;
 use App\Controllers\DailyTaskController;
-use App\Controllers\StatsController;
+use App\Controllers\GoodHabitsController;
 
   // Define routes
   $router->get('/', [HomeController::class, 'index']);
@@ -48,5 +49,22 @@ use App\Controllers\StatsController;
    $router->put('/dailyTask/{id}', [DailyTaskController::class, 'update'], [AuthMiddleware::class]);
    $router->delete('/dailyTask/{id}/delete', [DailyTaskController::class, 'destroy'], [AuthMiddleware::class]);
    $router->post('/dailyTask/{id}/toggle', [DailyTaskController::class, 'toggle'], [AuthMiddleware::class]);
+   
+   //Good Habits
+   $router->get('/goodHabits/index',[GoodHabitsController::class, 'index'], [AuthMiddleware::class]);
+   $router->get('/goodHabits/create', [GoodHabitsController::class, 'create'], [AuthMiddleware::class]);
+   $router->post('/goodHabits', [GoodHabitsController::class, 'store'], [AuthMiddleware::class]);
+   $router->get('/goodHabits/{id}/edit', [GoodHabitsController::class, 'edit'], [AuthMiddleware::class]);
+   $router->put('/goodHabits/{id}', [GoodHabitsController::class, 'update'], [AuthMiddleware::class]);
+   $router->delete('/goodHabits/{id}/delete', [GoodHabitsController::class, 'destroy'], [AuthMiddleware::class]);
+   $router->post('/goodHabits/{id}/toggle', [GoodHabitsController::class, 'toggle'], [AuthMiddleware::class]);
 
-  
+  //Bad Habits
+   $router->get('/badHabits/index',[BadHabitsController::class, 'index'], [AuthMiddleware::class]);
+   $router->get('/badHabits/create', [BadHabitsController::class, 'create'], [AuthMiddleware::class]);
+   $router->post('/badHabits', [BadHabitsController::class, 'store'], [AuthMiddleware::class]);
+   $router->get('/badHabits/{id}/edit', [BadHabitsController::class, 'edit'], [AuthMiddleware::class]);
+   $router->put('/badHabits/{id}', [BadHabitsController::class, 'update'], [AuthMiddleware::class]);
+   $router->delete('/badHabits/{id}/delete', [BadHabitsController::class, 'destroy'], [AuthMiddleware::class]);
+   $router->post('/badHabits/{id}/toggle', [BadHabitsController::class, 'toggle'], [AuthMiddleware::class]);
+   

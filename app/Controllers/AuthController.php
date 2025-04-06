@@ -115,7 +115,7 @@ class AuthController extends Controller
         'user_id' => $userId,
         'xp' => 0,
         'level' => 1,
-        'hearts' => 3
+        'hearts' => 10
       ]);
     }
 

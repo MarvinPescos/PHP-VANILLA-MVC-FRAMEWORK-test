@@ -5,42 +5,41 @@ namespace App\Controllers;
 use App\Core\Auth;
 use App\Core\Controller;
 use App\Core\Input;
-use App\Models\DailyTasks;
-use App\Models\UserStats;
+use App\Models\BadHabits;
 use App\Models\User;
+use App\Models\UserStats;
 use App\Models\Activities;
 
 
-class DailyTaskController extends Controller 
+class BadHabitsController extends Controller 
 {
 
-    protected $DailyTaskM;
-    protected $UserStatsM;
+    protected $BadHabitsM;
     protected $UserM;
+    protected $UserStatsM;
 
 
 
     public function __construct(){
-        $this->DailyTaskM = new DailyTasks();
-        $this->UserStatsM = new UserStats();
+        $this->BadHabitsM = new BadHabits();
         $this->UserM = new User();
-
+        $this->UserStatsM = new UserStats();
 
     }
 
     public function index (){
         $currentUser = Auth::user();
-        $dailyTasks = $this->DailyTaskM->getDailyTasksByUserId($currentUser['id']);
+        $badHabits = $this->BadHabitsM->getBadHabitsByUserId($currentUser['id']);
 
-        return $this->view('dailyTask/index',[
-            'title' => 'Daily Task',
-            'dailyTasks' => $dailyTasks
+        return $this->view('badHabits/index',[
+            'title' => 'BadHabits',
+            'badHabits' => $badHabits
         ]); 
     }
 
     public function create () {
-        return $this->view('dailyTask/create', [
-            'title' => 'Create Daily Tasks'
+        return $this->view('badHabits/create', [
+            'title' => 'Create badHabits'
         ]);
     }
 
@@ -56,16 +55,16 @@ class DailyTaskController extends Controller
 
             ]);
 
-            $this->DailyTaskM->create($data);
-            $this->redirect('/dailyTask/index');
+            $this->BadHabitsM->create($data);
+            $this->redirect('/badHabits/index');
     }
 
     public function edit ($id){
-        $dailyTasks = $this->DailyTaskM->find($id);
+        $badHabits = $this->BadHabitsM->find($id);
 
-        return $this->view('dailyTask/edit', [
+        return $this->view('badHabits/edit', [
             'title' => 'Edit Daily Tasks',
-            'dailyTasks' => $dailyTasks
+            'badHabits' => $badHabits
         ]);
     }
 
@@ -80,46 +79,46 @@ class DailyTaskController extends Controller
 
         ]);
 
-        $updated = $this->DailyTaskM->update($id, $data);
+        $updated = $this->BadHabitsM->update($id, $data);
 
         if($updated){
-            $_SESSION['success'] = 'Daily Task Updated Successfully';
-            $this->redirect('/dailyTask/index');
+            $_SESSION['success'] = 'badHabits  Updated Successfully';
+            $this->redirect('/badHabits/index');
         }else {
             $_SESSION['error'] = 'Failed to Update Daily Task';
-            $this->redirect('/dailyTask/index');
+            $this->redirect('/badHabits/index');
         }
     }
 
     public function destroy ($id){
         $currentUser = Auth::user();
-        $task = $this->DailyTaskM->find($id);
+        $badHabits = $this->BadHabitsM->find($id);
     
         // Check if task exists and belongs to current user
-        if (!$task || $task['user_id'] !== $currentUser['id']) {
+        if (!$badHabits || $badHabits['user_id'] !== $currentUser['id']) {
             $_SESSION['error'] = 'Unauthorized access!';
-            $this->redirect('dailyTask/index');
+            $this->redirect('badHabits/index');
             return;
         }
     
-        $deleted = $this->DailyTaskM->delete($id);
+        $deleted = $this->BadHabitsM->delete($id);
     
         if ($deleted) {
-            $_SESSION['success'] = 'Task deleted successfully!';
+            $_SESSION['success'] = 'badHabits deleted successfully!';
         } else {
-            $_SESSION['error'] = 'Failed to delete task!';
+            $_SESSION['error'] = 'Failed to delete badHabits!';
         }
     
-        $this->redirect('/dailyTask/index');
+        $this->redirect('/badHabits/index');
     }
 
     public function toggle($id) {
         $currentUser = Auth::user();
-        $dailyTasks = $this->DailyTaskM->find($id);
+        $badHabits = $this->BadHabitsM->find($id);
 
-        $newStatus = $dailyTasks['status'] === 'completed' ? 'pending' : 'completed';
+        $newStatus = $badHabits['status'] === 'completed' ? 'pending' : 'completed';
         
-        $updated = $this->DailyTaskM->update($id, [
+        $updated = $this->BadHabitsM->update($id, [
             "status" => $newStatus,
             "user_id" => $currentUser['id']
         ]);
@@ -127,36 +126,30 @@ class DailyTaskController extends Controller
         if($updated){
             $_SESSION['success'] = 'Daily task updated!';
             if($newStatus === 'completed'){
-                
                 $xpRewards = [
                     'easy' => 10,
                     'medium' => 20,
                     'hard' => 30,
                 ];
-
                 $coinRewards = [
                     'easy' => 5,
                     'medium' => 10,
                     'hard' => 15,
                 ];
 
-                $xpReward = $xpRewards[$dailyTasks['difficulty']] ;
-                $coinReward = $coinRewards[$dailyTasks['difficulty']];
+                $xpReward = $xpRewards[$badHabits['difficulty']] ;
+                $coinReward = $coinRewards[$badHabits['difficulty']];
                 $user_id = $currentUser['id'];
 
                 $this->UserStatsM->addXp($user_id, $xpReward);
-                $this->UserStatsM->addSp($currentUser['id'], $dailyTasks['category'], $dailyTasks['difficulty']);
                 $this->UserM->addCoin($user_id, $coinReward);
-
 
             }
         }else{
                 $_SESSION['error'] = 'Daily task failed to update!';
             }
 
-            $this->DailyTaskM->resetDailyTasks(); 
-
-             $this->redirect('/dailyTask/index');
+             $this->redirect('/badHabits/index');
         }
     }
 

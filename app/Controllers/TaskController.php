@@ -9,6 +9,7 @@ use App\Core\Controller;
 use App\Core\Input;
 use App\Models\Tasks;
 use App\Models\UserStats;
+use App\Models\User;
 use App\Models\Activities;
 
 use function PHPUnit\Framework\isEmpty;
@@ -18,12 +19,16 @@ class TaskController extends Controller
 
 protected $TaskM;
 protected $UserStatsM;
+protected $UserM;
+
 protected $ActivitiesM;
+
 
 public function  __construct()
 {
 $this->TaskM = new Tasks();
 $this->UserStatsM = new UserStats();
+$this->UserM = new User();
 $this->ActivitiesM = new Activities();
 }
 
@@ -139,11 +144,22 @@ public function toggle ($id){
                 'medium' => 20,
                 'hard' => 30,
             ];
+
+            
+            $coinRewards = [
+                'easy' => 5,
+                'medium' => 10,
+                'hard' => 15,
+            ];
+            
             $xpReward = $xpRewards[$task['difficulty']];
+            $coinReward = $coinRewards[$task['difficulty']];
             $user_id = $currentUser['id'];
 
             $this->UserStatsM->addXp($user_id, $xpReward);
             $this->UserStatsM->addSp($currentUser['id'], $task['category'], $task['difficulty']);
+            $this->UserM->addCoin($user_id, $coinReward);
+
         }
     } else {
         $_SESSION['error'] = 'Failed to update task!';
