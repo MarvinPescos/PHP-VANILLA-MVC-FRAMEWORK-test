@@ -37,7 +37,7 @@
                         </div>
                     </div>
 
-                    //delete edit
+                    <!-- //delete edit -->
                     <div class="btn-group">
     <a href="/badHabits/<?= $badHabit['id'] ?>/edit" class="btn btn-sm btn-outline-primary">
         <i class="fas fa-edit"></i> Edit

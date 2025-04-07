@@ -91,10 +91,41 @@ class UserStats Extends Model {
     
         $newHeart = $user['hearts'] - 1;
     
-        return $this->update($user['id'], [
+        $updated =  $this->update($user['id'], [
           'hearts' => $newHeart
         ]);
-    
+
+        if($updated && $newHeart <= 0) {
+            $this->resetStatsPunishment($user_id);
+            $_SESSION['warning' ] = 'Your hearts reached zero! All stat have been reset to 5.';
+        }   
+
+      }
+
+      public function resetStatsPunishment ($user_id){
+            $user = $this->getByUserId($user_id);
+
+            if(!$user){
+                return false;
+            }
+
+            if($user['hearts'] <= 0) {
+                return $this->update($user['id'], [
+                    'physicalHealth' => 5,
+                    'mentalWellness' => 5,
+                    'personalGrowth' => 5,
+                    'careerStudies' => 5,
+                    'finance' => 5,
+                    'homeEnvironment' => 5,
+                    'relationShipsSocial' => 5,
+                    'passionHobbies' => 5,
+                    'hearts' => 10,
+                    'level' => 1,
+                    'xp' => 0
+                ]);
+            }
+
+
       }
 
 }
