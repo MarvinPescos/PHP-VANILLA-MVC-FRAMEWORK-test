@@ -71,7 +71,7 @@ class UserStats Extends Model {
 
         if(!$columnName){
             return false;
-        }
+        } 
 
         $points = $difficultyPoints[$difficulty] ?? 1;
 
@@ -81,6 +81,21 @@ class UserStats Extends Model {
             $columnName => $newStats
         ]);
     }
+
+    public function minusHeart ($user_id) {
+        $user = $this->getByUserId($user_id);
+    
+        if(!$user){
+          return false;
+        }
+    
+        $newHeart = $user['hearts'] - 1;
+    
+        return $this->update($user['id'], [
+          'hearts' => $newHeart
+        ]);
+    
+      }
 
 }
 ?>

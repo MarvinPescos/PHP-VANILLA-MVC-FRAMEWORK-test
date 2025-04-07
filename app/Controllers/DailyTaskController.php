@@ -24,14 +24,13 @@ class DailyTaskController extends Controller
         $this->DailyTaskM = new DailyTasks();
         $this->UserStatsM = new UserStats();
         $this->UserM = new User();
-
-
     }
 
     public function index (){
         $currentUser = Auth::user();
-        $dailyTasks = $this->DailyTaskM->getDailyTasksByUserId($currentUser['id']);
 
+        $this->DailyTaskM->resetDailyTasks(); 
+        $dailyTasks = $this->DailyTaskM->getDailyTasksByUserId($currentUser['id']);
         return $this->view('dailyTask/index',[
             'title' => 'Daily Task',
             'dailyTasks' => $dailyTasks
@@ -154,7 +153,6 @@ class DailyTaskController extends Controller
                 $_SESSION['error'] = 'Daily task failed to update!';
             }
 
-            $this->DailyTaskM->resetDailyTasks(); 
 
              $this->redirect('/dailyTask/index');
         }

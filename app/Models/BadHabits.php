@@ -17,4 +17,21 @@ class BadHabits Extends Model {
         ->fetchAll();
 }
 
+    public function cleanDay($user_id, $date = null){
+        $date = $date ?: date('Y-m-d');
+
+        $result = self::$db->query("
+            SELECT COUNT (*) as count
+            FROM badHabits
+            WHERE user_id = ?
+            AND status = 'completed'
+            AND DATE(updated_at)  = ?
+        ")
+        ->bind([1 => $user_id, $date])
+        ->execute()
+        ->fetch();
+
+        return $result['count'] == 0;
+    }
+
 }

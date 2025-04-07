@@ -114,7 +114,22 @@ class GoodHabitsController extends Controller
     public function toggle($id) {
         $currentUser = Auth::user();
         $goodHabits = $this->GoodHabitsM->find($id);
+   
+        if ($goodHabits['status'] === 'completed') {
+            // Reset to pending first
+            $this->GoodHabitsM->update($id, [
+                "status" => 'pending',
+                "user_id" => $currentUser['id']
+            ]);
+        }
 
+        $updated = $this->GoodHabitsM->update($id, [
+            "status" => 'completed',
+            "user_id" => $currentUser['id']
+        ]);
+
+        if($updated){
+            $_SESSION['success'] = 'Daily task updated!';     
                 $xpRewards = [
                     'easy' => 10,
                     'medium' => 20,
@@ -126,7 +141,6 @@ class GoodHabitsController extends Controller
                     'medium' => 10,
                     'hard' => 15,
                 ];
-
                 
                 $xpReward = $xpRewards[$goodHabits['difficulty']] ;
                 $coinReward = $coinRewards[$goodHabits['difficulty']];
@@ -134,8 +148,13 @@ class GoodHabitsController extends Controller
 
                 $this->UserStatsM->addXp($user_id, $xpReward);
                 $this->UserStatsM->addSp($currentUser['id'], $goodHabits['category'], $goodHabits['difficulty']);
-                $this->UserM->addCoin($user_id, $coinReward); 
-                $this->redirect('/goodHabits/index');
+                $this->UserM->addCoin($user_id, $coinReward);
+
+        }else{
+                $_SESSION['error'] = 'Daily task failed to update!';
+            }
+
+             $this->redirect('/goodHabits/index');
         }
     }
 

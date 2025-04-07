@@ -124,33 +124,56 @@ class BadHabitsController extends Controller
         ]);
 
         if($updated){
-            $_SESSION['success'] = 'Daily task updated!';
+            $_SESSION['success'] = 'Bad Habits task updated!';
             if($newStatus === 'completed'){
-                $xpRewards = [
-                    'easy' => 10,
-                    'medium' => 20,
-                    'hard' => 30,
-                ];
-                $coinRewards = [
-                    'easy' => 5,
-                    'medium' => 10,
-                    'hard' => 15,
-                ];
+            
+               $user_id = $currentUser['id'];
 
-                $xpReward = $xpRewards[$badHabits['difficulty']] ;
-                $coinReward = $coinRewards[$badHabits['difficulty']];
-                $user_id = $currentUser['id'];
-
-                $this->UserStatsM->addXp($user_id, $xpReward);
-                $this->UserM->addCoin($user_id, $coinReward);
+               $this->UserStatsM->minusHeart($user_id);
 
             }
         }else{
-                $_SESSION['error'] = 'Daily task failed to update!';
+                $_SESSION['error'] = 'Bad Habits failed to update!';
             }
 
              $this->redirect('/badHabits/index');
         }
-    }
+
+        public function checkCleanDay (){
+            $currentUser = Auth::user();
+            $user_id = $currentUser['id'];
+
+            $badHabits = $this->BadHabitsM->getBadHabitsByUserId($user_id);
+
+            $checkHabits = $this->BadHabitsM->cleanDay($user_id);
+
+            if($checkHabits){
+
+                $categoryHabits = [];
+
+                foreach($badHabits as $badHabit) {
+                    $category = $badHabit['category'];
+                    $difficulty = $badHabit['difficulty'];
+                }
+
+                if (!isset($categoryHabits[$category])) {
+                    $categoryHabits[$category] = [];
+                }
+                
+                $categoryHabits[$category][] = $difficulty;
+            }
+
+            foreach ($categoryHabits as $category => $difficulties) {
+   
+                foreach ($difficulties as $difficulty) {
+            
+                    $this->UserStatsM->addSp($user_id, $category, $difficulty);
+                }
+            }
+
+            }
+
+        }
+    
 
 ?>

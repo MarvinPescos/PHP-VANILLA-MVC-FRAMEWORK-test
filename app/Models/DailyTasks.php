@@ -14,12 +14,21 @@ class DailyTasks extends Model {
             ->fetchAll();
     }
 
-    public function resetDailyTasks(){
-        return self::$db->query("
-        UPDATE dailytasks 
-        SET status = 'pending', last_reset = CURRENT_TIMESTAMP
-        WHERE TIMESTAMPDIFF(HOUR, last_reset, CURRENT_TIMESTAMP) >= 24")
-        ->execute();
+    public function resetDailyTasks(/*$forceReset = false*/){
+        // if ($forceReset) {
+        // For testing - resets all tasks regardless of time
+        //     return self::$db->query("
+        //     UPDATE dailytasks 
+        //     SET status = 'pending', last_reset = CURRENT_TIMESTAMP")
+        //     ->execute();
+        // }
+
+        // Normal production code
+    return self::$db->query("
+    UPDATE dailytasks 
+    SET status = 'pending', last_reset = CURRENT_TIMESTAMP
+    WHERE DATE(last_reset) < CURDATE() OR last_reset IS NULL")
+    ->execute();
     }
     
 }

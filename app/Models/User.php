@@ -54,6 +54,8 @@ class User extends Model
 
   }
 
+
+
   /**
    * Retrieve user email using inner join
    */
