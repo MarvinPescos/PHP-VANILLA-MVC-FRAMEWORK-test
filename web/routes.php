@@ -8,6 +8,7 @@ use App\Middleware\AuthMiddleware;
 use App\Controllers\TaskController;
 use App\Controllers\DailyTaskController;
 use App\Controllers\GoodHabitsController;
+use App\Controllers\JournalController;
 
   // Define routes
   $router->get('/', [HomeController::class, 'index']);
@@ -67,4 +68,13 @@ use App\Controllers\GoodHabitsController;
    $router->put('/badHabits/{id}', [BadHabitsController::class, 'update'], [AuthMiddleware::class]);
    $router->delete('/badHabits/{id}/delete', [BadHabitsController::class, 'destroy'], [AuthMiddleware::class]);
    $router->post('/badHabits/{id}/toggle', [BadHabitsController::class, 'toggle'], [AuthMiddleware::class]);
+
+   $router->get('/journal/index',[JournalController::class, 'index'], [AuthMiddleware::class]);
+   $router->get('/journal/create', [JournalController::class, 'create'], [AuthMiddleware::class]);
+   $router->post('/journal', [JournalController::class, 'store'], [AuthMiddleware::class]); 
+   $router->get('/journal/{id}/peek', [JournalController::class, 'peek'], [AuthMiddleware::class]);
+   $router->get('/journal/{id}/edit', [JournalController::class, 'edit'], [AuthMiddleware::class]);
+   $router->put('/journal/{id}', [JournalController::class, 'update'], [AuthMiddleware::class]);
+   $router->delete('/journal/{id}/delete', [JournalController::class, 'destroy'], [AuthMiddleware::class]);
+   $router->post('/journal/{id}/toggle', [JournalController::class, 'toggle'], [AuthMiddleware::class]);
    
